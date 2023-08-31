@@ -67,7 +67,7 @@ def generate_report(input: str):
 def generate_text():
     headers = {
         'accept': 'application/json',
-        'x-gladia-key': '18f77b57-f3b2-4b86-8fb1-2671a1095171',
+        'x-gladia-key': os.getenv("GLADIA_API_KEY"),
     }
 
     files = {
