@@ -1,5 +1,8 @@
 import os
 import openai
+import requests
+import json
+from fastapi.encoders import jsonable_encoder
 
 MAX_LENGTH = 10000
 
@@ -60,3 +63,32 @@ def generate_report(input: str):
     response = openai.Completion.create(model="text-davinci-002", prompt=prompt, temperature=0, max_tokens=100)
 
     return show_snippet(response)
+
+def generate_text():
+    headers = {
+        'accept': 'application/json',
+        'x-gladia-key': '18f77b57-f3b2-4b86-8fb1-2671a1095171',
+    }
+
+    files = {
+        'audio': (
+            'test.m4a',
+            open('audio/test.m4a', 'rb'),
+            'audio/m4a',
+            {'Expires': '0'}
+        ),
+        'toggle_diarization': True,
+        'diarization_max_speakers': 2
+    }
+
+    response = requests.post('https://api.gladia.io/audio/text/audio-transcription/', headers=headers, files=files)
+    jsoned = response.json()
+    data = jsonable_encoder(jsoned)
+
+    t_data = []
+    for arr in data["prediction"]:
+        t_data.append(dict(tr=arr["transcription"], sp=arr["speaker"]))
+
+    print(t_data)
+    
+    return t_data
