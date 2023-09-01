@@ -21,7 +21,7 @@ def validate_input(user_input):
     return { 'status': True, 'msg': "Input is valid" }
 
 def show_snippet(response):
-    report = response["choices"][0]["text"]
+    report = response["choices"][0]["message"]["content"]
     print(f"\nReport: {report}")
     return { 'status': True, 'msg': report }
 
@@ -36,7 +36,7 @@ def generate_report(input: str):
 
     print(f"Value: {input}")
     print("Generating report...")
-
+    
     convo = input
 
     prompt = f"""{convo}
@@ -60,7 +60,14 @@ def generate_report(input: str):
     Patient understanding
     """
 
-    response = openai.Completion.create(model="text-davinci-002", prompt=prompt, temperature=0, max_tokens=100)
+    response = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=[{
+        "role": "system",
+        "content": "You're a medical note scribe"
+    }, 
+    {
+        "role": "user",
+        "content": prompt
+    }])
 
     return show_snippet(response)
 
