@@ -1,4 +1,8 @@
 secret.txt
 __pycache__
 .DS_Store
+conversation.txt
+/.vscode
+/env
 /audio
+/sa
