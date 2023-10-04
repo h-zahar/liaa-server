@@ -96,7 +96,7 @@ def generate_text_wh():
     files = {
         'audio': (
             'test.m4a',
-            open('audio/test.m4a', 'rb'),
+            open('audio/test-2.m4a', 'rb'),
             'audio/m4a',
             {'Expires': '0'}
         ),
